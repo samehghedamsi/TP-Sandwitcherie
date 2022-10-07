@@ -1,0 +1,18 @@
+Tester longueur du pain
+
+Tester si le prix du pain correspond à la longueur
+
+Tester l'ajout d'ingrédients:niveau prix 
+				     niveau calorie
+
+
+
+Tester  l'addition des calories
+
+Tester le choix de la sauce
+
+Tester 2,45€ d'ingrédients
+
+calorie sans sauce 15 cm   1372kcal
+calorie sans sauce 30 cm   2601kcal
+calorie des ingredients  1174kcal
