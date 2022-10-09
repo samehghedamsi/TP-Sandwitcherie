@@ -29,8 +29,9 @@ class Sandwich():
         list_ingredient_prix= {'Poulet':0.2,'Boeuf':0.2,'Vegan':0.3,'Fromage':0.5,'Salade':0.2,'Tomate':0.2,'Oignons':0.3, 'sauce':0.55 }
         list_sauce_cal = {'Mayo':120,'Ketchup':189,'Blanche':110,'Andalouse':200}
         nbr_ing = int(input("combien d'ingredients voulez vous ajouter: "))
-        list_ing = []
-
+        list_ing = ['pain']
+        list_ing_prix = [mon_sandwich.prix]
+        list_ing_calorie = [mon_sandwich.calorie]
         for i in range (nbr_ing):
             ajout_ing = input("veuillez saisir l'ingredient à ajouter, finissez votre ajout en tapant sur entree sans rien indiquer")
             if ajout_ing not in list_ingredient_prix:
@@ -39,12 +40,16 @@ class Sandwich():
             if ajout_ing in list_ingredient_prix:
                 i = 0
                 list_ing.append(ajout_ing)
+                list_ing_prix.append(mes_ingredients.prix)
+                list_ing_calorie.append(mes_ingredients.calorie)
                 print(list_ing)
                 mes_ingredients.prix = list_ingredient_prix.get(ajout_ing)
                 mes_ingredients.calorie = list_ingredient_cal.get(ajout_ing)
-                print(mes_ingredients.prix, mes_ingredients.calorie)
+                print(list_ing_prix, list_ing_calorie)
                 i += 1
-
+                mes_ingredients.prix = sum(list_ing_prix)
+                mes_ingredients.calorie = sum(list_ing_calorie)
+        print(mes_ingredients.prix, mes_ingredients.calorie)
 
 
 mon_sandwich = Sandwich(int(input("veuillez saisir la longueur de votre pain 15 ou 30:")))
