@@ -33,6 +33,7 @@ Bonus :
 - Dessert ? (libre cours à votre imagination)'''
 
 import unittest
+import app_sandwich
 class TestClass(unittest.TestCase):
 
     # création des sandwiches avec tous les ingrédients en 15 et 30 cm, avec sauce et sans sauce
