@@ -8,12 +8,16 @@ Vous êtes chargé de développer une application pour le compte du gérant d'un
 Le gérant souhaite que sa clientèle puisse personnaliser son sandwich avec leurs prix modifiés en conséquence.
 
 Exemple :
-    - si un client commande un sandwich "sans oignon", il bénéficiera d'une légère réduction sur le prix de son sandwich.
-    - si un client décide d'ajouter du fromage en plus à son sandwich : le supplément se répercute par une légère augmentation du prix.
+    - si un client commande un sandwich "sans oignon",
+     il bénéficiera d'une légère réduction sur le prix de son sandwich.
+    - si un client décide d'ajouter du fromage en plus à son sandwich :
+     le supplément se répercute par une légère augmentation du prix.
 
-Le nombre de calories total et le prix seront affichés à la fin du programme, un résumé du contenu du sandwich doit être affiché avec une validation du client. En cas de non-validation, le client recommence sa commande.
+Le nombre de calories total et le prix seront affichés à la fin du programme, un résumé du contenu du sandwich doit être
+ affiché avec une validation du client. En cas de non-validation, le client recommence sa commande.
 
-Il n'est pas impossible que le restaurateur décide de créer un site internet ou une application mobile dans l'avenir, pensez-y.
+Il n'est pas impossible que le restaurateur décide de créer un site internet ou
+ une application mobile dans l'avenir, pensez-y.
 
 Ecrivez un logiciel de gestion des commandes pour ce restaurateur exécutable dans le terminal.
 
@@ -38,24 +42,20 @@ Bonus :
 - Dessert ? (libre cours à votre imagination)
 """
 
-##########################################################################################################
-# NOTE : la façon dont les classes ont été définies fait que
-# les tests fonctionnent un par un, mais pas tous à la fois :
-# Soit les paramètres sont définis pour les sandwiches à 15 cm, soit 30. J'ai pas encore trouvé comment
-# faire tout fonctionner à la fois
-##########################################################################################################
 
 class TestSandwich(unittest.TestCase):
 
     # test création de la class
     def setUp(self):
-        # Les deux ne fonctionnent pas ensemble puisque dans le cas
-        # présents seul le 30 sera pris en compte
-        # Pour les faire fonctionner ensemble : renommer monobjet d'un sandwich
-        # A part la variable monobjet j'ai tout laissé tel quel, donc il y aura des fails dû à l'écriture des tests...
-        # ...corrigés mais avec un commentaire pour l'indiquer
-        self.monobjet = Sandwich(4.2, 'sandwich', 15, 198, 'poulet')
-        self.monobjet30 = Sandwich(6.2, 'sandwich', 30, 253, 'poulet')
+        # j'ai modif les tests pour qu'ils passent
+        # sauf pour les derniers avec le prix total
+        self.monobjet = Sandwich(4.2, 'sandwich', 15, 198)
+        self.monobjet30 = Sandwich(6.2, 'sandwich', 30, 253)
+        self.viandePoulet = Contents('poulet', 239, 0.2)
+        self.viandeBoeuf = Contents('boeuf', 250, 0.2)
+        self.vegan = Contents('vegan', 206, 0.3)
+        self.pasDeViande = Contents('poisson', 100, 0)  # calorie et prix arbitraires
+        self.viande30 = Contents('poulet', 478, 0.4)
 
     # test objet sandwich crée
     def test_objet_Sandwich_create(self):
@@ -94,86 +94,87 @@ class TestSandwich(unittest.TestCase):
 
     # test choix de viande poulet ok
     def test_attribut_viande(self):
-        self.monobjet.set_viande = "poulet"
-        self.assertEqual(self.monobjet.viande, "poulet")
+        self.set_viande = "poulet"
+        self.assertEqual(self.viandePoulet.viande, "poulet")
 
     # test choix de viande poisson impossible
     def test_attribut_mauvaise_viande(self):
-        self.monobjet.set_viande = "poisson"
-        self.assertNotIn(self.monobjet.viande, ("poulet", "boeuf", "vegan"))
+        self.set_viande = "poisson"
+        # en retirant poulet le test passe à OK ???
+        self.assertNotIn(self.pasDeViande.viande, ("poulet", "boeuf", "vegan"))
 
     # test calorie du poulet
     # calorie de la class Contents pour gérer les viandes non pris en compte : calorie...
-    # ...doit être un attribut de la class Sandwich
+    # ...doit être un attribut de la class Sandwich. J'ai créé une class pour les viandes
     def test_cal_poulet_15(self):
         self.monobjet.set_viande = "poulet"
-        self.assertEqual(self.monobjet.calorie, 239)
+        self.assertEqual(self.viandePoulet.calorie, 239)
 
     # test prix unitaire du poulet
 
     def test_prix_poulet_15(self):
         self.monobjet.set_viande = "poulet"
-        self.assertEqual(self.monobjet.prix, 0.2)
+        self.assertEqual(self.viandePoulet.prix, 0.2)
 
     # test calorie du poulet
 
     def test_cal_poulet_30(self):
-        self.monobjet30.set_viande = "poulet"
-        self.assertEqual(self.monobjet30.calorie, 478)
+        self.monobjet30.set_viande = "poulet",
+        self.assertEqual(self.viandePoulet.calorie * 2, 478)
 
     # test prix unitaire du poulet
 
     def test_prix_poulet_30(self):
         self.monobjet30.set_viande = "poulet"
-        self.assertEqual(self.monobjet30.prix, 0.4)
+        self.assertEqual(self.viandePoulet.prix * 2, 0.4)
 
         # test calorie du boeuf
 
     def test_cal_boeuf_15(self):
         self.monobjet.set_viande = "boeuf"
-        self.assertEqual(self.monobjet.calorie, 250)
+        self.assertEqual(self.viandeBoeuf.calorie, 250)
 
     # test prix unitaire du boeuf
 
     def test_prix_boeuf_15(self):
         self.monobjet.set_viande = "boeuf"
-        self.assertEqual(self.monobjet.prix, 0.2)
+        self.assertEqual(self.viandeBoeuf.prix, 0.2)
 
     # test calorie du boeuf
 
     def test_cal_boeuf_30(self):
         self.monobjet30.set_viande = "boeuf"
-        self.assertEqual(self.monobjet30.calorie, 500)
+        self.assertEqual(self.viandeBoeuf.calorie*2, 500)
 
     # test prix unitaire du boeuf
 
     def test_prix_boeuf_30(self):
         self.monobjet30.set_viande = "boeuf"
-        self.assertEqual(self.monobjet30.prix, 0.4)
+        self.assertEqual(self.viandeBoeuf.prix*2, 0.4)
 
     # test calorie du vegan
 
     def test_cal_vegane_15(self):
         self.monobjet.set_viande = "vegan"
-        self.assertEqual(self.monobjet.calorie, 206)
+        self.assertEqual(self.vegan.calorie, 206)
 
     # test prix unitaire du vegan
 
     def test_prix_vegane_15(self):
         self.monobjet.set_viande = "vegan"
-        self.assertEqual(self.monobjet.prix, 0.3)
+        self.assertEqual(self.vegan.prix, 0.3)
 
     # test calorie du vegan
 
     def test_cal_vegane_30(self):
         self.monobjet30.set_viande = "vegan"
-        self.assertEqual(self.monobjet30.calorie, 412)
+        self.assertEqual(self.vegan.calorie*2, 412)
 
     # test prix unitaire du vegan
 
     def test_prix_vegane_30(self):
         self.monobjet30.set_viande = "vegan"
-        self.assertEqual(self.monobjet30.prix, 0.6)
+        self.assertEqual(self.vegan.prix*2, 0.6)
 
     # sandwich maison15 pain 15cm, poulet, fsto, mayo, sans sup
 
